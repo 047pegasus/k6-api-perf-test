@@ -26,23 +26,21 @@ pipeline {
                 stage('Server Running') {
                     steps {
                         echo 'Spinning up server...'
-                        keepRunning(label: 'API-Testing-Script'){
-                            bat 'node app.js'
-                        }
+                        bat 'node app.js'    
                     }
                 }
                 stage('K6 Load Testing') {
-                    while (!exit_now) {
+                    steps {
                         echo 'Running K6 load tests...'
                         bat 'k6 run k6-test.js'
                         sleep 2
                         exit_now = true
-                        break
-                    }
-                }
-                post {
-                    always {
-                        exit_now = true
+                        when {
+                            expression { exit_now }
+                        } 
+                        steps{
+                            break
+                        }
                     }
                 }
             }
