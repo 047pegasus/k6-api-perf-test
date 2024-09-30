@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps { 
                checkout scm
-               bat 'git pull'
+               bat 'git pull origin master'
             }
         }
         stage('Build') {
