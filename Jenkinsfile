@@ -43,11 +43,11 @@ pipeline {
             }
             steps {
                 echo 'Deploying application...'
-                sh 'git checkout deploy'
-                sh 'git pull'
-                sh 'git add .'
-                sh 'git commit -m "Deploying new version"'
-                sh 'git push origin deploy'
+                bat 'git checkout deploy'
+                bat 'git pull'
+                bat 'git add .'
+                bat 'git commit -m "Deploying new version"'
+                bat 'git push origin deploy'
             }
         }
     }
