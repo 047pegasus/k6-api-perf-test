@@ -20,34 +20,32 @@ pipeline {
             }
         }
         stage('Load Testing with K6') {
-            parallel{
-                stage('Server Running') {
-                    steps {
-                        echo 'Spinning up server...'
-                        keepRunning(label: 'API-Testing-Script'){
-                            bat 'node app.js'
-                        }
-                    }
-                }
-                stage('K6 testing') {
-                    steps {
-                        echo 'Running K6 load tests...'
-                        bat 'k6 run k6-test.js'
+            stage('Server Running') {
+                steps {
+                    echo 'Spinning up server...'
+                    keepRunning(label: 'API-Testing-Script'){
+                        bat 'node app.js'
                     }
                 }
             }
-        }
-        stage('Deploy') {
-            when {
-                expression { currentBuild.result == 'SUCCESS' }
+            stage('K6 testing') {
+                steps {
+                    echo 'Running K6 load tests...'
+                    bat 'k6 run k6-test.js'
+                }
             }
-            steps {
-                echo 'Deploying application...'
-                bat 'git checkout deploy'
-                bat 'git pull'
-                bat 'git add .'
-                bat 'git commit -m "Deploying new version"'
-                bat 'git push origin deploy'
+            stage('Deploy') {
+                when {
+                    expression { currentBuild.result == 'SUCCESS' }
+                }
+                steps {
+                    echo 'Deploying application...'
+                    bat 'git checkout deploy'
+                    bat 'git pull'
+                    bat 'git add .'
+                    bat 'git commit -m "Deploying new version"'
+                    bat 'git push origin deploy'
+                }
             }
         }
     }
