@@ -45,9 +45,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            when {
-                expression { currentBuild.result == 'SUCCESS' }
-            }
             steps {
                 echo 'Deploying application...'
                 bat 'git checkout deploy'
