@@ -34,11 +34,8 @@ pipeline {
                         echo 'Running K6 load tests...'
                         bat 'k6 run k6-test.js'
                         sleep 2
-                        exit_now = true
-                        when {
-                            expression { exit_now }
-                        } 
-                        steps{
+                        script{
+                            exit_now = true
                             break
                         }
                     }
