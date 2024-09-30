@@ -1,0 +1,21 @@
+{
+  "name": "k6-api-perf-test",
+  "version": "1.0.0",
+  "description": "A repo to contain a sample Express API app to test API performce using K6 Load Testing.",
+  "main": "k6-test.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0",
+    "pkg": "^5.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
