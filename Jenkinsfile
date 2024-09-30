@@ -2,8 +2,9 @@ pipeline {
     agent any
     stages {
         stage('Checkout') {
-            steps {
-                bat 'git checkout master'
+            steps { 
+               checkout scm
+               bat 'git pull'
             }
         }
         stage('Build') {
@@ -15,7 +16,7 @@ pipeline {
         stage('Executable Builds') {
             steps {
                 echo 'Running build for executables...'
-                sh 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
+                bat 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
             }
         }
         stage('Load Testing with K6') {
@@ -24,14 +25,14 @@ pipeline {
                     steps {
                         echo 'Spinning up server...'
                         keepRunning(label: 'API-Testing-Script'){
-                            sh 'node app.js'
+                            bat 'node app.js'
                         }
                     }
                 }
                 stage('K6 testing') {
                     steps {
                         echo 'Running K6 load tests...'
-                        sh 'k6 run k6-test.js'
+                        bat 'k6 run k6-test.js'
                     }
                 }
             }
