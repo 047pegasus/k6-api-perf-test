@@ -1,6 +1,11 @@
 pipeline {
-    agent local
+    agent any
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building Node.js application...'
