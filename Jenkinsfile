@@ -25,7 +25,7 @@ pipeline {
                     steps {
                         echo 'Starting the Node.js server...'
                         // Start the Node.js server in the background
-                        bat 'nohup node app.js &'
+                        bat 'start /B node app.js &'
                     }
                 }
                 stage('Run K6 Load Test') {
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 echo 'Stopping the server...'
                 // Kill the server process running on default port 3000
-                bat "taskkill /f /im node.exe"
+                bat "taskkill /f /im node.exe || exit 0"
             }
         }
         stage('Deploy') {
