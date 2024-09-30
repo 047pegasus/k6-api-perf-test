@@ -1,5 +1,3 @@
-def exit_now =false
-
 pipeline {
     agent any
     stages {
@@ -26,18 +24,15 @@ pipeline {
                 stage('Server Running') {
                     steps {
                         echo 'Spinning up server...'
-                        bat 'node app.js'    
+                        keepRunning(label: 'API-Testing-Script'){
+                            bat 'node app.js'
+                        }
                     }
                 }
-                stage('K6 Load Testing') {
+                stage('K6 testing') {
                     steps {
                         echo 'Running K6 load tests...'
                         bat 'k6 run k6-test.js'
-                        sleep 2
-                        script{
-                            exit_now = true
-                            break
-                        }
                     }
                 }
             }
