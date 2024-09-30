@@ -32,7 +32,7 @@ pipeline {
                     steps {
                         echo 'Running K6 performance test...'
                         // Ensure K6 is installed in your environment
-                        sh 'k6 run k6-test.js'
+                        bat 'k6 run k6-test.js'
                     }
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 echo 'Stopping the server...'
                 // Kill the server process running on default port 3000
-                sh "kill $(lsof -t -i:3000)"
+                bat "kill $(lsof -t -i:3000)"
             }
         }
         stage('Deploy') {
@@ -62,7 +62,7 @@ pipeline {
         always {
             echo 'Cleaning up...'
             // Make sure the server is stopped in case of any failures
-            sh "kill $(lsof -t -i:3000) || true"
+            bat "kill $(lsof -t -i:3000) || true"
         }
     }
 }
