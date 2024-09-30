@@ -1,3 +1,5 @@
+def exit_now =false
+
 pipeline {
     agent any
     stages {
@@ -29,10 +31,20 @@ pipeline {
                         }
                     }
                 }
-                stage('K6 testing') {
+                stage('K6 Load Testing') {
                     steps {
-                        echo 'Running K6 load tests...'
-                        bat 'k6 run k6-test.js'
+                        while (!exit_now) {
+                            echo 'Running K6 load tests...'
+                            bat 'k6 run k6-test.js'
+                            sleep 2
+                            exit_now = true
+                            break
+                        }
+                    }
+                }
+                post {
+                    always {
+                        exit_now = true
                     }
                 }
             }
