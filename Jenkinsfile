@@ -47,13 +47,16 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                bat 'git checkout deploy'
-                bat 'git pull'
                 bat 'git config --global user.email "tanishqoct11@gmail.com"'
                 bat 'git config --global user.name "047pegasus"'
-                bat 'git add .'
+                bat 'git checkout deploy'
+                bat 'git pull origin deploy'
+                bat 'git rebase master'
+                bat 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
+                bat 'git add -f dist'
                 bat 'git commit -m "Deploying new version"'
                 bat 'git push origin deploy'
+                echo 'Deployment completed and pushed to the deploy branch.'
             }
         }
     }
