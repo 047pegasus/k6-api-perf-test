@@ -19,18 +19,29 @@ pipeline {
                 bat 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
             }
         }
-        stage('Server Running') {
-            steps {
-                echo 'Spinning up server...'
-                keepRunning(label: 'API-Testing-Script'){
-                    bat 'node app.js'
+        stage('Start Server & Run K6 Load Test') {
+            parallel {
+                stage('Start Server') {
+                    steps {
+                        echo 'Starting the Node.js server...'
+                        // Start the Node.js server in the background
+                        bat 'nohup node app.js &'
+                    }
+                }
+                stage('Run K6 Load Test') {
+                    steps {
+                        echo 'Running K6 performance test...'
+                        // Ensure K6 is installed in your environment
+                        sh 'k6 run k6-test.js'
+                    }
                 }
             }
         }
-        stage('K6 testing') {
+        stage('Stop Server') {
             steps {
-                echo 'Running K6 load tests...'
-                bat 'k6 run k6-test.js'
+                echo 'Stopping the server...'
+                // Kill the server process running on default port 3000
+                sh "kill $(lsof -t -i:3000)"
             }
         }
         stage('Deploy') {
@@ -45,6 +56,13 @@ pipeline {
                 bat 'git commit -m "Deploying new version"'
                 bat 'git push origin deploy'
             }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up...'
+            // Make sure the server is stopped in case of any failures
+            sh "kill $(lsof -t -i:3000) || true"
         }
     }
 }
