@@ -49,6 +49,8 @@ pipeline {
                 echo 'Deploying application...'
                 bat 'git checkout deploy'
                 bat 'git pull'
+                bat 'git config --global user.email "tanishqoct11@gmail.com"'
+                bat 'git config --global user.name "047pegasus"'
                 bat 'git add .'
                 bat 'git commit -m "Deploying new version"'
                 bat 'git push origin deploy'
