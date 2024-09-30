@@ -41,7 +41,7 @@ pipeline {
             steps {
                 echo 'Stopping the server...'
                 // Kill the server process running on default port 3000
-                bat 'taskkill /f /im node.exe'
+                bat "taskkill /f /im node.exe"
             }
         }
         stage('Deploy') {
@@ -62,7 +62,7 @@ pipeline {
         always {
             echo 'Cleaning up...'
             // Make sure the server is stopped in case of any failures
-            bat "kill $(lsof -t -i:3000) || true"
+            bat "taskkill /f /im node.exe"
         }
     }
 }
