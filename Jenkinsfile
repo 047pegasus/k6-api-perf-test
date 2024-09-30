@@ -15,7 +15,7 @@ pipeline {
         stage('Executable Builds') {
             steps {
                 echo 'Running build for executables...'
-                bat 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
+                sh 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
             }
         }
         stage('Load Testing with K6') {
@@ -24,14 +24,14 @@ pipeline {
                     steps {
                         echo 'Spinning up server...'
                         keepRunning(label: 'API-Testing-Script'){
-                            bat 'node app.js'
+                            sh 'node app.js'
                         }
                     }
                 }
                 stage('K6 testing') {
                     steps {
                         echo 'Running K6 load tests...'
-                        bat 'k6 run k6-test.js'
+                        sh 'k6 run k6-test.js'
                     }
                 }
             }
@@ -42,11 +42,11 @@ pipeline {
             }
             steps {
                 echo 'Deploying application...'
-                bat 'git checkout deploy'
-                bat 'git pull'
-                bat 'git add .'
-                bat 'git commit -m "Deploying new version"'
-                bat 'git push origin deploy'
+                sh 'git checkout deploy'
+                sh 'git pull'
+                sh 'git add .'
+                sh 'git commit -m "Deploying new version"'
+                sh 'git push origin deploy'
             }
         }
     }
