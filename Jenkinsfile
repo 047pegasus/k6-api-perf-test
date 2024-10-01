@@ -80,7 +80,7 @@ pipeline {
         always {
             echo 'Cleaning up...'
             // Make sure the server is stopped in case of any failures
-            bat "taskkill /f /im node.exe || exit 0"
+            // bat "taskkill /f /im node.exe || exit 0"
             bat 'docker stop influxdb'
             bat 'docker rm influxdb'
         }
