@@ -19,13 +19,13 @@ pipeline {
                 bat 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
             }
         }
-        stage('Setup InfluxDB & Grafana') {
+        stage('Setup InfluxDB') {
             steps {
                 script {
                     echo 'Setting up InfluxDB...'
                     
                     // Step 1: Spin up InfluxDB v1 Docker container
-                    bat 'docker run -d -p 8086:8086 influxdb:1.8'
+                    bat 'docker run -d -p 8086:8086 --name influxdb influxdb:1.8'
 
                     // Step 2: Wait for InfluxDB to be ready (adjust sleep time if needed)
                     sleep(time: 5, unit: "SECONDS")
@@ -81,6 +81,8 @@ pipeline {
             echo 'Cleaning up...'
             // Make sure the server is stopped in case of any failures
             bat "taskkill /f /im node.exe || exit 0"
+            bat 'docker stop influxdb'
+            bat 'docker rm influxdb'
         }
     }
 }
