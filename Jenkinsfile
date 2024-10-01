@@ -83,6 +83,7 @@ pipeline {
             // bat "taskkill /f /im node.exe || exit 0"
             bat 'docker stop influxdb'
             bat 'docker rm influxdb'
+            bat 'exit 0'
         }
     }
 }
