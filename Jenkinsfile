@@ -63,14 +63,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                bat 'git config --global user.email "tanishqoct11@gmail.com"'
-                bat 'git config --global user.name "047pegasus"'
-                bat 'git checkout deploy'
-                bat 'git pull origin deploy'
-                bat 'npx pkg app.js --targets node18-win-x64 --out-path ./dist'
-                bat 'git add .'
-                bat 'git commit -m "Deploying new version"'
-                bat 'git push origin deploy'
+                // Deploy the application to the deploy branch
                 echo 'Deployment completed and pushed to the deploy branch.'
             }
         }
@@ -82,7 +75,6 @@ pipeline {
             // bat "taskkill /f /im node.exe || exit 0"
             bat 'docker stop influxdb'
             bat 'docker rm influxdb'
-            bat 'exit 0'
         }
     }
 }
