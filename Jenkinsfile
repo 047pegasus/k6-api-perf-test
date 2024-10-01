@@ -19,6 +19,22 @@ pipeline {
                 bat 'npx pkg app.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./dist'
             }
         }
+        stage('Setup InfluxDB & Grafana') {
+            steps {
+                script {
+                    echo 'Setting up InfluxDB...'
+                    
+                    // Step 1: Spin up InfluxDB v1 Docker container
+                    bat 'docker run -d -p 8086:8086 --name influxdb influxdb:1.8'
+
+                    // Step 2: Wait for InfluxDB to be ready (adjust sleep time if needed)
+                    sleep(time: 5, unit: "SECONDS")
+
+                    // Step 3: Create the 'k6results' database in InfluxDB
+                    bat '''docker exec influxdb influx -execute "CREATE DATABASE k6results"'''
+                }
+            }
+        }
         stage('Start Server & Run K6 Load Test') {
             parallel {
                 stage('Start Server') {
@@ -32,7 +48,7 @@ pipeline {
                     steps {
                         echo 'Running K6 performance test...'
                         // Ensure K6 is installed in your environment
-                        bat 'k6 run k6-test.js'
+                        bat 'k6 run --out influxdb=http://localhost:8086/k6results k6-test.js'
                     }
                 }
             }
