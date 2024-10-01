@@ -25,7 +25,7 @@ pipeline {
                     echo 'Setting up InfluxDB...'
                     
                     // Step 1: Spin up InfluxDB v1 Docker container
-                    bat 'docker run -d -p 8086:8086 --name influxdb influxdb:1.8'
+                    bat 'docker run -d -p 8086:8086 influxdb:1.8'
 
                     // Step 2: Wait for InfluxDB to be ready (adjust sleep time if needed)
                     sleep(time: 5, unit: "SECONDS")
