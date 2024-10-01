@@ -67,7 +67,6 @@ pipeline {
                 bat 'git config --global user.name "047pegasus"'
                 bat 'git checkout deploy'
                 bat 'git pull origin deploy'
-                bat 'git rebase master'
                 bat 'npx pkg app.js --targets node18-win-x64 --out-path ./dist'
                 bat 'git add .'
                 bat 'git commit -m "Deploying new version"'
