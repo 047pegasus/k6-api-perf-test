@@ -53,13 +53,13 @@ pipeline {
                 }
             }
         }
-        stage('Stop Server') {
-            steps {
-                echo 'Stopping the server...'
-                // Kill the server process running on default port 3000
-                bat "taskkill /f /im node.exe"
-            }
-        }
+        // stage('Stop Server') {
+        //     steps {
+        //         echo 'Stopping the server...'
+        //         // Kill the server process running on default port 3000
+        //         bat "taskkill /f /im node.exe"
+        //     }
+        // }
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
