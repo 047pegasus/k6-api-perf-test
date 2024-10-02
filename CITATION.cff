@@ -1,0 +1,27 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: k6-api-perf-test
+message: >-
+  This is a colleciton of Node Express app and the
+  associated k6 test script file.
+type: software
+authors:
+  - given-names: Tanishq Agarwal
+    email: professional.tanishq@gmail.com
+repository-code: 'https://github.com/047pegasus/k6-api-perf-test'
+abstract: >-
+  This is a colleciton of Node Express app and the
+  associated k6 test script file.
+keywords:
+  - API Performance
+  - Testing
+  - CI/CD
+  - Automation
+  - Scalability
+  - Load Testing
+license: GPL-3.0
+commit: 1ac2338a28b86fbe78409481c185d1114400822d
+version: '0.1'
+date-released: '2024-10-01'
