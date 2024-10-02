@@ -11,7 +11,23 @@ export let options = {
 };
 
 export default function () {
-    let res = http.get('http://localhost:3000/api/users');
+    let res = http.get('http://localhost:3001/api/users');
+    check(res, { 'status was 200': (r) => r.status == 200 });
+    sleep(1);
+    res = http.get('http://localhost:3001/api/orders');
+    check(res, { 'status was 200': (r) => r.status == 200 });
+    sleep(1);
+    res = http.get('http://localhost:3001/api/products');
+    check(res, { 'status was 200': (r) => r.status == 200 });
+    sleep(1);
+    res = http.post('http://localhost:3001/api/orders', {
+        user_id: 1,
+        product_id: 1,
+        quantity: 1
+    });
+    check(res, { 'status was 200': (r) => r.status == 200 });
+    sleep(1);
+    res = http.get('http://localhost:3001/api/orders');
     check(res, { 'status was 200': (r) => r.status == 200 });
     sleep(1);
 }
